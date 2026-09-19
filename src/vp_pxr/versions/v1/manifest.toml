@@ -1,0 +1,54 @@
+schema = 1
+pathway = "pxr"
+version = "v1"
+released = "2026-09-19"
+reason = "first release: binary XGBoost on Morgan, MACCS and RDKit descriptors over the Tox21 pregnane-X-receptor screen"
+
+[signature]
+version = 1
+inputs = ["smiles"]
+
+[[signature.outputs]]
+name = "pxr_agonist"
+dtype = "float32"
+range = [0.0, 1.0]
+semantics = "P(activates the human pregnane X receptor reporter in the Tox21 qHTS agonist screen)"
+missing = "NaN when RDKit cannot parse the input SMILES"
+
+[[signature.outputs]]
+name = "pxr_cytotox"
+dtype = "float32"
+range = [0.0, 1.0]
+semantics = "P(reduces viability in the counter-screen over the same library). A compound scoring high on both moved the reporter in a cell that was also dying"
+missing = "NaN when RDKit cannot parse the input SMILES"
+
+[dataset]
+name = "Tox21 pregnane X receptor qHTS"
+source = "PubChem BioAssay AID 1346982 (Human pregnane X receptor (PXR) small molecule agonists, qHTS assay) and AID 1346977 (Human pregnane X receptor (PXR) small molecule agonists, qHTS cell viability counter screen), rows called Active or Inactive, one row per compound labelled by majority call across its assay records"
+url = "https://pubchem.ncbi.nlm.nih.gov/rest/pug/assay/aid/1346982/concise/CSV"
+retrieved = "2026-09-06"
+licence = "public-domain"
+redistributable = true
+path = "data/pxr_tox21.parquet"
+labels = ["label", "cytotox"]
+sha256 = "eea5ba76176f73b43392abef99a9f245b1df340f92f3c75b8bc6b0be425a8b12"
+n_rows = 6482
+base_rate = 0.244369
+fetch = "python -m vp_pxr.data fetch --verify"
+
+[model]
+family = "xgboost-binary"
+features = "combo3"
+fit = "one model per output, each on every compound its endpoint labels minus a 10% scaffold carve used for early stopping"
+weights = "weights.joblib"
+sha256 = "006712c723fda23b96def72751b8703a12221547128142cf1da8cf28f4701889"
+
+[protocol]
+id = "scaffold-balanced-5seed@1"
+provider = "vp-core"
+core_version = "1.4.0"
+
+[provenance]
+python = "3.11.11"
+rdkit = "2026.03.5"
+xgboost = "3.2.0"

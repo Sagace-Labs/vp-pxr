@@ -1,0 +1,54 @@
+Data licence — data/pxr_tox21.parquet
+=====================================
+
+This file applies ONLY to the bundled dataset at `data/pxr_tox21.parquet` and
+its derived fixture at `data/example/pxr_example.parquet`. The source code and
+the trained weights in `src/vp_pxr/` are licensed separately under Apache-2.0;
+see LICENSE.
+
+Source
+------
+PubChem BioAssay (https://pubchem.ncbi.nlm.nih.gov/), deposited by the
+NCATS/NIEHS/EPA/FDA Tox21 programme, retrieved 2026-09-06 via the PUG-REST
+concise assay endpoint:
+
+  AID 1346982 — "Human pregnane X receptor (PXR) small molecule agonists, qHTS
+                assay"
+  AID 1346977 — "Human pregnane X receptor (PXR) small molecule agonists, qHTS
+                cell viability counter screen", over the same library
+
+Derivation
+----------
+Rows each assay called Active or Inactive were kept and rows it called
+Inconclusive were dropped; compound identifiers were resolved to isomeric
+SMILES through the PubChem compound property endpoint; structures were
+standardised (normalise, largest fragment, neutralise) and collapsed to one row
+per InChIKey by majority call, with ties dropped. Only the InChIKey,
+standardised SMILES, the two binary labels, median reported potency and record
+counts are retained.
+
+Licence
+-------
+Tox21 assay data deposited in PubChem is produced by United States federal
+agencies in the course of their official duties. Such works are not subject to
+copyright protection in the United States (17 U.S.C. Section 105) and are
+therefore in the public domain. PubChem states that it places no restrictions
+on the use or distribution of the data it hosts:
+
+    https://www.ncbi.nlm.nih.gov/home/about/policies/
+
+No licence conditions attach to this dataset or to adaptations of it.
+Attribution below is requested as scholarly practice, not as a licence term.
+
+Attribution
+-----------
+Huang R, Xia M, Cho MH, et al. Chemical genomics profiling of environmental
+chemical modulation of human nuclear receptors. Environmental Health
+Perspectives 2011, 119(8):1142-1148.
+
+Tice RR, Austin CP, Kavlock RJ, Bucher JR. Improving the human hazard
+characterization of chemicals: a Tox21 update. Environmental Health
+Perspectives 2013, 121(7):756-765.
+
+Kim S, Chen J, Cheng T, et al. PubChem 2025 update. Nucleic Acids Research
+2025, 53(D1):D1516-D1525.

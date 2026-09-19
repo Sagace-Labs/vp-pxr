@@ -1,0 +1,29 @@
+[project]
+name = "vp-pxr"
+version = "1.0.0"
+description = "Pregnane-X-receptor activation and cell-viability loss predicted from a SMILES string — a molecular initiating event for drug-induced liver injury."
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Sagace Labs" }]
+keywords = ["cheminformatics", "toxicology", "DILI", "PXR", "NR1I2", "QSAR"]
+dependencies = [
+    "vp-core>=1.4,<2",
+    "numpy>=1.26",
+    "pandas>=2.2",
+    "requests>=2.31",
+]
+
+[project.urls]
+Source = "https://github.com/Sagace-Labs/vp-pxr"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# Released versions live inside the package directory, so the manifests and
+# weights are picked up here and travel with the wheel. The dataset is not
+# included: it is needed only to retrain.
+[tool.hatch.build.targets.wheel]
+packages = ["src/vp_pxr"]
+artifacts = ["src/vp_pxr/versions/**"]
